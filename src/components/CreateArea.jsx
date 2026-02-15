@@ -1,5 +1,5 @@
 import React from "react";
-//add comment
+
 function CreateArea(props) {
   return (
     <div>

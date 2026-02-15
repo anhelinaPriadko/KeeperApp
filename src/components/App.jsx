@@ -23,6 +23,14 @@ function App() {
     event.preventDefault();
   }
 
+  function deleteNote(id) {
+    setNotesList((prevState) => {
+      return prevState.filter((value, index) => {
+        return index !== id;
+      });
+    });
+  }
+
   function handleInputEvent(event) {
     const { name, value } = event.target;
     setNote((prevState) => {
@@ -47,6 +55,7 @@ function App() {
             id={index}
             title={note.title}
             content={note.content}
+            onDelete={deleteNote}
           />
         );
       })}
