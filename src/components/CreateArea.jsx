@@ -3,7 +3,7 @@ import React from "react";
 function CreateArea(props) {
   return (
     <div>
-      <form>
+      <form className="create-note">
         <input
           name="title"
           onChange={props.onInputChange}
