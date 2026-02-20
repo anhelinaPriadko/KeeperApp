@@ -1,6 +1,6 @@
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { Fab } from "@mui/material";
+import Fab from "@mui/material/Fab";
 import { Zoom } from "@mui/material";
 
 function CreateArea(props) {
@@ -20,9 +20,9 @@ function CreateArea(props) {
           placeholder="Take a note..."
           rows="3"
         />
-        <button onClick={props.onAdd}>
+        <Fab onClick={props.onAdd}>
           <AddIcon />
-        </button>
+        </Fab>
       </form>
     </div>
   );
