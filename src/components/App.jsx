@@ -11,6 +11,18 @@ function App() {
   });
   const [notesList, setNotesList] = useState([]);
 
+  const [inputClicked, setInputClicked] = useState(false);
+  const [showRows, setShowRows] = useState(1);
+
+  function handleInputSize() {
+    setInputClicked((prevState) => {
+      return !prevState;
+    });
+    setShowRows((prevState) => {
+      return prevState == 1 ? 3 : 1;
+    });
+  }
+
   function addNote(event) {
     setNotesList((prevState) => {
       return [...prevState, note];
@@ -47,6 +59,9 @@ function App() {
         onAdd={addNote}
         onInputChange={handleInputEvent}
         noteState={note}
+        onInputClick={handleInputSize}
+        rowsNumber={showRows}
+        showAll={inputClicked}
       />
       {notesList.map((note, index) => {
         return (

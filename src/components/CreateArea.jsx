@@ -1,7 +1,7 @@
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
-import { Zoom } from "@mui/material";
+import Zoom from "@mui/material/Zoom";
 
 function CreateArea(props) {
   return (
@@ -12,17 +12,21 @@ function CreateArea(props) {
           onChange={props.onInputChange}
           value={props.noteState.title}
           placeholder="Title"
+          hidden={!props.showAll}
         />
         <textarea
           name="content"
+          onClick={props.onInputClick}
           onChange={props.onInputChange}
           value={props.noteState.content}
           placeholder="Take a note..."
-          rows="3"
+          rows={props.rowsNumber}
         />
-        <Fab onClick={props.onAdd}>
-          <AddIcon />
-        </Fab>
+        <Zoom in={props.showAll}>
+          <Fab onClick={props.onAdd}>
+            <AddIcon />
+          </Fab>
+        </Zoom>
       </form>
     </div>
   );
