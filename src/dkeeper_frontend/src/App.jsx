@@ -1,30 +1,67 @@
 import { useState } from 'react';
-import { dkeeper_backend } from 'declarations/dkeeper_backend';
+import { dkeeper_backend } from '../../declarations/dkeeper_backend';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Note from "./components/Note";
+import CreateArea from "./components/CreateArea";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  const [note, setNote] = useState({
+    title: "",
+    content: "",
+  });
+  const [notesList, setNotesList] = useState([]);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    dkeeper_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
+  function addNote(event) {
+    setNotesList((prevState) => {
+      return [...prevState, note];
     });
-    return false;
+    setNote({
+      title: "",
+      content: "",
+    });
+
+    event.preventDefault();
   }
 
+  function deleteNote(id) {
+    setNotesList((prevState) => {
+      return prevState.filter((value, index) => {
+        return index !== id;
+      });
+    });
+  }
+
+  function handleInputEvent(event) {
+    const { name, value } = event.target;
+    setNote((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
+  }
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <div>
+      <Header />
+      <CreateArea
+        onAdd={addNote}
+        onInputChange={handleInputEvent}
+        noteState={note}
+      />
+      {notesList.map((note, index) => {
+        return (
+          <Note
+            key={index}
+            id={index}
+            title={note.title}
+            content={note.content}
+            onDelete={deleteNote}
+          />
+        );
+      })}
+      <Footer />
+    </div>
   );
 }
 
