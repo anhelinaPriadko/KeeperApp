@@ -12,31 +12,33 @@ function App() {
   });
   const [notesList, setNotesList] = useState([]);
 
+  // Просто викликаємо fetchData, ніяких ручних маніпуляцій з агентом
   useEffect(() => {
     fetchData();
   }, []);
 
   async function fetchData() {
-  try {
-    const notes = await dkeeper_backend.getnotes();
-    console.log("Отримано з бекенду:", notes); // <--- ЦЕ ДУЖЕ ВАЖЛИВО
-    setNotesList(notes);
-  } catch (error) {
-    console.error("Помилка fetchData:", error);
+    try {
+      const notes = await dkeeper_backend.getnotes();
+      console.log("Отримано з бекенду:", notes); 
+      setNotesList(notes);
+    } catch (error) {
+      console.error("Помилка fetchData:", error);
+    }
   }
-}
 
   async function addNote(event) {
-    await dkeeper_backend.addnote(note.title, note.content);
-    setNotesList((prevState) => {
-      return [...prevState, note];
-    });
-    setNote({
-      title: "",
-      content: "",
-    });
-
     event.preventDefault();
+    try {
+      await dkeeper_backend.addnote(note.title, note.content);
+      await fetchData();
+      setNote({
+        title: "",
+        content: "",
+      });
+    } catch (error) {
+      console.error("Помилка при додаванні:", error);
+    }
   }
 
   function deleteNote(id) {
@@ -56,6 +58,7 @@ function App() {
       };
     });
   }
+
   return (
     <div>
       <Header />
@@ -64,13 +67,13 @@ function App() {
         onInputChange={handleInputEvent}
         noteState={note}
       />
-      {notesList.map((note, index) => {
+      {notesList.map((noteItem, index) => {
         return (
           <Note
             key={index}
             id={index}
-            title={note.title}
-            content={note.content}
+            title={noteItem.title}
+            content={noteItem.content}
             onDelete={deleteNote}
           />
         );
