@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dkeeper_backend } from '../../declarations/dkeeper_backend';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -12,7 +12,22 @@ function App() {
   });
   const [notesList, setNotesList] = useState([]);
 
-  function addNote(event) {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+  try {
+    const notes = await dkeeper_backend.getnotes();
+    console.log("Отримано з бекенду:", notes); // <--- ЦЕ ДУЖЕ ВАЖЛИВО
+    setNotesList(notes);
+  } catch (error) {
+    console.error("Помилка fetchData:", error);
+  }
+}
+
+  async function addNote(event) {
+    await dkeeper_backend.addnote(note.title, note.content);
     setNotesList((prevState) => {
       return [...prevState, note];
     });
