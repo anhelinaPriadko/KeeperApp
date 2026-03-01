@@ -57,12 +57,20 @@ function App() {
     }
   }
 
-  function deleteNote(id) {
-    setNotesList((prevState) => {
-      return prevState.filter((value, index) => {
-        return index !== id;
-      });
-    });
+  async function deleteNote(id) {
+    if (!backendActor) return;
+
+    try {
+      await backendActor.deletenote(id);
+      await fetchData();
+    } catch (error) {
+      console.error("Помилка при видаленні:", error);
+    }
+    // setNotesList((prevState) => {
+    //   return prevState.filter((value, index) => {
+    //     return index !== id;
+    //   });
+    // });
   }
 
   function handleInputEvent(event) {

@@ -19,4 +19,14 @@ persistent actor DKeeper{
   public query func getnotes(): async [Note] {
     return List.toArray(notes);
   };
+
+  public func deletenote(index: Nat): async () {
+    if(index >= List.size(notes) or index < 0) {
+      Debug.print("Index out of bounds");
+      return;
+    };
+    let before:List.List<Note> = List.take(notes, index);
+    let after:List.List<Note> = List.drop(notes,index + 1);
+    notes := List.append(before, after);
+  };
 }
